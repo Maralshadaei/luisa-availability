@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUISA — Summer 2026 Availability</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1612;
+    --gold: #C8922A;
+    --gold-light: #E8C97A;
+    --sage: #4A6741;
+    --border: #DDD5C8;
+    --muted: #7A6E63;
+    --bg: #F4F1EC;
+    --white: #ffffff;
+    --danger: #8B3A2A;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 48px 40px 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content:''; position:absolute; top:-60px; right:-60px;
+    width:280px; height:280px; border-radius:50%;
+    border:1px solid rgba(200,146,42,0.2); pointer-events:none;
+  }
+  .header::after {
+    content:''; position:absolute; bottom:-40px; left:32%;
+    width:160px; height:160px; border-radius:50%;
+    border:1px solid rgba(200,146,42,0.1); pointer-events:none;
+  }
+  .header-label { font-size:11px; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; font-weight:500; }
+  .header h1 { font-family:'Playfair Display',serif; font-size:clamp(24px,5vw,36px); line-height:1.15; margin-bottom:10px; }
+  .header p { font-size:14px; color:rgba(250,247,242,0.6); font-weight:300; line-height:1.6; max-width:480px; }
+
+  /* ── Progress ── */
+  .progress-bar { height:3px; background:rgba(200,146,42,0.2); }
+  .progress-fill { height:100%; background:var(--gold); width:0%; transition:width 0.35s; }
+
+  /* ── Tabs ── */
+  .tab-row {
+    display:flex; gap:8px; max-width:680px; margin:28px auto 0; padding:0 24px;
+  }
+  .tab-btn {
+    flex:1; padding:11px 16px; border:1.5px solid var(--border);
+    border-radius:10px; background:var(--white); font-family:'DM Sans',sans-serif;
+    font-size:13.5px; cursor:pointer; color:var(--muted); transition:all 0.15s;
+    display:flex; align-items:center; justify-content:center; gap:7px;
+  }
+  .tab-btn.active { background:var(--ink); color:var(--cream); border-color:var(--ink); }
+  .tab-btn:not(.active):hover { border-color:var(--gold); color:var(--gold); }
+
+  /* ── Wrap ── */
+  .form-wrap { max-width:680px; margin:0 auto; padding:32px 24px 60px; }
+
+  /* ── Sections ── */
+  .section { margin-bottom:28px; opacity:0; transform:translateY(12px); animation:fadeUp 0.45s forwards; }
+  .section:nth-child(1){animation-delay:0.04s} .section:nth-child(2){animation-delay:0.1s}
+  .section:nth-child(3){animation-delay:0.16s} .section:nth-child(4){animation-delay:0.22s}
+  .section:nth-child(5){animation-delay:0.28s} .section:nth-child(6){animation-delay:0.34s}
+  @keyframes fadeUp { to { opacity:1; transform:none; } }
+
+  .sec-title { font-family:'Playfair Display',serif; font-size:16px; display:flex; align-items:center; gap:9px; margin-bottom:5px; }
+  .sec-num { width:24px; height:24px; background:var(--gold); color:var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'DM Sans',sans-serif; font-size:10px; font-weight:700; flex-shrink:0; }
+  .sec-hint { font-size:12.5px; color:var(--muted); margin:0 0 14px 33px; line-height:1.5; }
+  .divider { height:1px; background:var(--border); margin:8px 0 28px; }
+
+  /* ── Inputs ── */
+  .field-group { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .field-label { display:block; font-size:11px; font-weight:500; color:var(--muted); letter-spacing:0.5px; text-transform:uppercase; margin-bottom:7px; }
+  input[type=text], input[type=email], select, textarea {
+    width:100%; padding:11px 13px; background:var(--white); border:1.5px solid var(--border);
+    border-radius:8px; font-family:'DM Sans',sans-serif; font-size:13.5px; color:var(--ink);
+    transition:border-color 0.2s, box-shadow 0.2s; outline:none; -webkit-appearance:none; appearance:none;
+  }
+  input:focus, select:focus, textarea:focus { border-color:var(--gold); box-shadow:0 0 0 3px rgba(200,146,42,0.12); }
+  textarea { resize:vertical; min-height:88px; }
+
+  /* ── Role chips ── */
+  .role-grid { display:flex; flex-wrap:wrap; gap:8px; }
+  .role-chip input { display:none; }
+  .role-chip label { padding:8px 16px; border:1.5px solid var(--border); border-radius:100px; cursor:pointer; font-size:13px; background:var(--white); transition:all 0.15s; color:var(--ink); }
+  .role-chip input:checked + label { background:var(--sage); border-color:var(--sage); color:white; }
+  .role-chip label:hover { border-color:var(--gold); }
+
+  /* ── Days ── */
+  .days-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:8px; }
+  .day-card input { display:none; }
+  .day-card label { display:flex; flex-direction:column; align-items:center; padding:11px 4px; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; background:var(--white); font-size:11px; font-weight:600; letter-spacing:0.5px; text-transform:uppercase; color:var(--muted); transition:all 0.15s; }
+  .day-card input:checked + label { background:var(--ink); border-color:var(--ink); color:var(--gold-light); }
+  .day-card label:hover { border-color:var(--gold); }
+
+  /* ── Time ── */
+  .time-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .time-card input { display:none; }
+  .time-card label { display:flex; align-items:center; gap:9px; padding:11px 14px; border:1.5px solid var(--border); border-radius:10px; cursor:pointer; background:var(--white); font-size:13.5px; color:var(--muted); transition:all 0.15s; }
+  .time-card input:checked + label { background:var(--ink); border-color:var(--ink); color:var(--cream); }
+  .time-card label:hover { border-color:var(--gold); }
+  .time-icon { font-size:18px; }
+
+  /* ── Unavailability ── */
+  .unavail-list { display:flex; flex-direction:column; gap:11px; }
+  .unavail-entry { background:var(--white); border:1.5px solid var(--border); border-radius:11px; padding:15px; position:relative; }
+  .entry-grid { display:grid; grid-template-columns:1fr 1fr 1.5fr; gap:10px; align-items:end; }
+  .remove-btn { position:absolute; top:9px; right:9px; width:22px; height:22px; background:none; border:1px solid var(--border); border-radius:50%; cursor:pointer; color:var(--muted); font-size:14px; display:flex; align-items:center; justify-content:center; transition:all 0.15s; line-height:1; padding:0; }
+  .remove-btn:hover { background:var(--danger); border-color:var(--danger); color:white; }
+  .add-btn { display:inline-flex; align-items:center; gap:7px; padding:9px 15px; background:none; border:1.5px dashed var(--border); border-radius:8px; color:var(--muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; margin-top:10px; transition:all 0.15s; }
+  .add-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* ── Submit ── */
+  .submit-btn { width:100%; padding:15px; background:var(--ink); color:var(--cream); border:none; border-radius:10px; font-family:'Playfair Display',serif; font-size:16px; cursor:pointer; transition:background 0.2s; letter-spacing:0.3px; }
+  .submit-btn:hover { background:#2a2420; }
+  .submit-btn:active { transform:scale(0.99); }
+
+  /* ── Success ── */
+  .success-screen { display:none; text-align:center; padding:60px 24px; }
+  .success-icon { width:60px; height:60px; background:var(--sage); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:26px; margin:0 auto 22px; color:white; }
+  .success-screen h2 { font-family:'Playfair Display',serif; font-size:26px; margin-bottom:10px; }
+  .success-screen p { color:var(--muted); font-size:14px; line-height:1.6; }
+  .switch-link { display:inline-block; margin-top:18px; color:var(--gold); font-size:13.5px; cursor:pointer; text-decoration:underline; }
+
+  /* ── Results ── */
+  .results-view { display:none; }
+  .stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:24px; }
+  .stat-card { background:var(--white); border:1.5px solid var(--border); border-radius:10px; padding:16px; text-align:center; }
+  .stat-n { font-size:28px; font-weight:500; color:var(--ink); }
+  .stat-l { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:0.5px; margin-top:4px; }
+  .res-section { margin-bottom:24px; }
+  .res-title { font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:12px; }
+  .bar-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+  .bar-key { font-size:13px; color:var(--ink); min-width:130px; }
+  .bar-track { flex:1; height:8px; background:var(--bg); border-radius:4px; overflow:hidden; }
+  .bar-fill { height:100%; background:var(--gold); border-radius:4px; transition:width 0.5s ease; }
+  .bar-count { font-size:12px; color:var(--muted); min-width:20px; text-align:right; }
+  .person-list { display:flex; flex-direction:column; gap:10px; }
+  .person-card { background:var(--white); border:1.5px solid var(--border); border-radius:11px; padding:14px 16px; }
+  .person-top { display:flex; align-items:center; gap:11px; margin-bottom:8px; }
+  .avatar { width:36px; height:36px; border-radius:50%; background:var(--ink); color:var(--gold); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; flex-shrink:0; }
+  .person-name { font-size:14px; font-weight:500; color:var(--ink); }
+  .person-role { font-size:12px; color:var(--muted); }
+  .person-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
+  .ptag { font-size:11.5px; padding:3px 10px; background:var(--bg); border-radius:100px; color:var(--muted); }
+  .ptag.unavail { background:rgba(200,146,42,0.12); color:#8a5a0a; }
+  .person-note { font-size:12px; color:var(--muted); margin-top:9px; font-style:italic; padding-top:9px; border-top:1px solid var(--border); }
+  .empty-state { text-align:center; padding:50px 20px; color:var(--muted); font-size:14px; }
+  .refresh-btn { display:inline-flex; align-items:center; gap:6px; margin-top:16px; padding:9px 18px; background:none; border:1.5px solid var(--border); border-radius:8px; color:var(--muted); font-family:'DM Sans',sans-serif; font-size:13px; cursor:pointer; transition:all 0.15s; }
+  .refresh-btn:hover { border-color:var(--gold); color:var(--gold); }
+
+  /* ── Storage note ── */
+  .storage-note { background:rgba(200,146,42,0.08); border:1px solid rgba(200,146,42,0.25); border-radius:8px; padding:12px 14px; font-size:12px; color:#7a5a10; margin-bottom:24px; line-height:1.6; }
+
+  /* ── Responsive ── */
+  @media(max-width:520px) {
+    .field-group { grid-template-columns:1fr; }
+    .days-grid { grid-template-columns:repeat(4,1fr); }
+    .entry-grid { grid-template-columns:1fr; }
+    .stat-grid { grid-template-columns:1fr 1fr; }
+    .header { padding:36px 24px 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-label">LUISA · Lehigh University · Summer 2026</div>
+  <h1>Availability & Scheduling Survey</h1>
+  <p>Help us plan biweekly meetings and set event dates. Takes about 2 minutes.</p>
+</div>
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+
+<!-- Tabs -->
+<div class="tab-row">
+  <button class="tab-btn active" id="tab-form" onclick="switchTab('form')">📋 Fill out form</button>
+  <button class="tab-btn" id="tab-results" onclick="switchTab('results')">📊 View results</button>
+</div>
+
+<div class="form-wrap">
+
+  <!-- ══ FORM VIEW ══ -->
+  <div id="form-view">
+    <div id="form-body">
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-num">1</span> Your info</div>
+        <div class="sec-hint">So we know who filled this out.</div>
+        <div class="field-group">
+          <div><label class="field-label">Full name *</label><input type="text" id="f-name" placeholder="e.g. Dara Ahmadi" oninput="updateProgress()"></div>
+          <div><label class="field-label">Email *</label><input type="email" id="f-email" placeholder="@lehigh.edu" oninput="updateProgress()"></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-num">2</span> Your role</div>
+        <div class="sec-hint">Select your position on the board.</div>
+        <div class="role-grid">
+          <div class="role-chip"><input type="radio" name="role" id="ro1" value="President" onchange="updateProgress()"><label for="ro1">President</label></div>
+          <div class="role-chip"><input type="radio" name="role" id="ro2" value="Vice President" onchange="updateProgress()"><label for="ro2">Vice President</label></div>
+          <div class="role-chip"><input type="radio" name="role" id="ro3" value="Treasurer" onchange="updateProgress()"><label for="ro3">Treasurer</label></div>
+          <div class="role-chip"><input type="radio" name="role" id="ro4" value="Secretary" onchange="updateProgress()"><label for="ro4">Secretary</label></div>
+          <div class="role-chip"><input type="radio" name="role" id="ro5" value="Communication Officer" onchange="updateProgress()"><label for="ro5">Communication Officer</label></div>
+          <div class="role-chip"><input type="radio" name="role" id="ro6" value="Consultant" onchange="updateProgress()"><label for="ro6">Consultant</label></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-num">3</span> Preferred meeting days</div>
+        <div class="sec-hint">Which days generally work for biweekly check-ins?</div>
+        <div class="days-grid">
+          <div class="day-card"><input type="checkbox" id="d1" name="day" value="Mon" onchange="updateProgress()"><label for="d1">Mon</label></div>
+          <div class="day-card"><input type="checkbox" id="d2" name="day" value="Tue" onchange="updateProgress()"><label for="d2">Tue</label></div>
+          <div class="day-card"><input type="checkbox" id="d3" name="day" value="Wed" onchange="updateProgress()"><label for="d3">Wed</label></div>
+          <div class="day-card"><input type="checkbox" id="d4" name="day" value="Thu" onchange="updateProgress()"><label for="d4">Thu</label></div>
+          <div class="day-card"><input type="checkbox" id="d5" name="day" value="Fri" onchange="updateProgress()"><label for="d5">Fri</label></div>
+          <div class="day-card"><input type="checkbox" id="d6" name="day" value="Sat" onchange="updateProgress()"><label for="d6">Sat</label></div>
+          <div class="day-card"><input type="checkbox" id="d7" name="day" value="Sun" onchange="updateProgress()"><label for="d7">Sun</label></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-num">4</span> Preferred time of day</div>
+        <div class="sec-hint">Pick your preferred window for meetings.</div>
+        <div class="time-grid">
+          <div class="time-card"><input type="radio" name="time" id="t1" value="Morning (9–12 PM)" onchange="updateProgress()"><label for="t1"><span class="time-icon">🌅</span> Morning (9–12 PM)</label></div>
+          <div class="time-card"><input type="radio" name="time" id="t2" value="Afternoon (12–4 PM)" onchange="updateProgress()"><label for="t2"><span class="time-icon">☀️</span> Afternoon (12–4 PM)</label></div>
+          <div class="time-card"><input type="radio" name="time" id="t3" value="Evening (5–8 PM)" onchange="updateProgress()"><label for="t3"><span class="time-icon">🌆</span> Evening (5–8 PM)</label></div>
+          <div class="time-card"><input type="radio" name="time" id="t4" value="Flexible" onchange="updateProgress()"><label for="t4"><span class="time-icon">🔄</span> Flexible</label></div>
+        </div>
+      </div>
+      <div class="divider"></div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-num">5</span> Unavailable periods</div>
+        <div class="sec-hint">Travel, conferences, exams, etc. Leave blank if none.</div>
+        <div class="unavail-list" id="unavail-list">
+          <div class="unavail-entry" id="ue-0">
+            <button class="remove-btn" onclick="removeEntry(0)" title="Remove">×</button>
+            <div class="entry-grid">
+              <div><label class="field-label">From</label><input type="text" class="date-from" placeholder="e.g. June 10"></div>
+              <div><label class="field-label">To</label><input type="text" class="date-to" placeholder="e.g. June 20"></div>
+              <div><label class="field-label">Reason</label>
+                <select class="reason-sel">
+                  <option value="">Select...</option>
+                  <option>Travel / Vacation</option>
+                  <option>Conference</option>
+                  <option>Exam / Academic</option>
+                  <option>Family Commitment</option>
+                  <option>Work / Internship</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button class="add-btn" onclick="addEntry()">＋ Add another period</button>
+      </div>
+      <div class="divider"></div>
+
+      <div class="section">
+        <div class="sec-title"><span class="sec-num">6</span> Anything else?</div>
+        <div class="sec-hint">Notes or constraints for the board.</div>
+        <textarea id="f-notes" placeholder="Optional — share anything that might help with planning..."></textarea>
+      </div>
+
+      <button class="submit-btn" onclick="submitForm()">Submit my availability →</button>
+    </div>
+
+    <div class="success-screen" id="success-screen">
+      <div class="success-icon">✓</div>
+      <h2>Thanks, we got it!</h2>
+      <p>Your response has been saved.<br>Everyone on the board can now see the results.</p>
+      <span class="switch-link" onclick="switchTab('results')">View the results dashboard →</span>
+    </div>
+  </div>
+
+  <!-- ══ RESULTS VIEW ══ -->
+  <div class="results-view" id="results-view">
+
+    <div class="storage-note">
+      ℹ️ <strong>Responses are stored in your browser's localStorage.</strong> For a real shared form, host this file on a server with a database backend, or use Google Forms. Each person's browser will only show responses submitted on that device unless you add a backend.
+    </div>
+
+    <div id="results-loading" style="text-align:center;padding:40px;color:var(--muted);display:none;">Loading...</div>
+
+    <div id="results-content">
+      <div class="stat-grid">
+        <div class="stat-card"><div class="stat-n" id="r-total">0</div><div class="stat-l">Responses</div></div>
+        <div class="stat-card"><div class="stat-n" id="r-top-day">—</div><div class="stat-l">Top day</div></div>
+        <div class="stat-card"><div class="stat-n" id="r-top-time">—</div><div class="stat-l">Top time</div></div>
+      </div>
+
+      <div class="res-section">
+        <div class="res-title">Preferred meeting days</div>
+        <div id="day-bars"></div>
+      </div>
+
+      <div class="res-section">
+        <div class="res-title">Preferred time of day</div>
+        <div id="time-bars"></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="res-section">
+        <div class="res-title">Board members</div>
+        <div class="person-list" id="person-list"></div>
+      </div>
+
+      <div id="results-empty" class="empty-state" style="display:none;">
+        No responses yet. Be the first to submit!
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:16px;">
+      <button class="refresh-btn" onclick="loadResults()">↻ Refresh results</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const STORAGE_KEY = 'luisa-2026-responses';
+  let entryCount = 1;
+
+  /* ── Tab switch ── */
+  function switchTab(tab) {
+    document.getElementById('tab-form').classList.toggle('active', tab === 'form');
+    document.getElementById('tab-results').classList.toggle('active', tab === 'results');
+    document.getElementById('form-view').style.display = tab === 'form' ? 'block' : 'none';
+    document.getElementById('results-view').style.display = tab === 'results' ? 'block' : 'none';
+    if (tab === 'results') loadResults();
+  }
+
+  /* ── Unavailability entries ── */
+  function addEntry() {
+    const list = document.getElementById('unavail-list');
+    const id = entryCount++;
+    const d = document.createElement('div');
+    d.className = 'unavail-entry'; d.id = `ue-${id}`;
+    d.innerHTML = `<button class="remove-btn" onclick="removeEntry(${id})" title="Remove">×</button>
+      <div class="entry-grid">
+        <div><label class="field-label">From</label><input type="text" class="date-from" placeholder="e.g. July 5"></div>
+        <div><label class="field-label">To</label><input type="text" class="date-to" placeholder="e.g. July 15"></div>
+        <div><label class="field-label">Reason</label>
+          <select class="reason-sel">
+            <option value="">Select...</option>
+            <option>Travel / Vacation</option><option>Conference</option>
+            <option>Exam / Academic</option><option>Family Commitment</option>
+            <option>Work / Internship</option><option>Other</option>
+          </select>
+        </div>
+      </div>`;
+    list.appendChild(d);
+  }
+
+  function removeEntry(id) {
+    const el = document.getElementById(`ue-${id}`);
+    if (el) el.remove();
+  }
+
+  /* ── Progress ── */
+  function updateProgress() {
+    const n = document.getElementById('f-name').value.trim();
+    const e = document.getElementById('f-email').value.trim();
+    const r = document.querySelector('input[name="role"]:checked');
+    const d = document.querySelector('input[name="day"]:checked');
+    const t = document.querySelector('input[name="time"]:checked');
+    const filled = [n, e, r, d, t].filter(Boolean).length;
+    document.getElementById('progress').style.width = Math.round(filled / 5 * 100) + '%';
+  }
+
+  /* ── Submit ── */
+  function submitForm() {
+    const name = document.getElementById('f-name').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    if (!name || !email) { alert('Please fill in your name and email.'); return; }
+
+    const role = (document.querySelector('input[name="role"]:checked') || {}).value || '';
+    const days = [...document.querySelectorAll('input[name="day"]:checked')].map(x => x.value);
+    const time = (document.querySelector('input[name="time"]:checked') || {}).value || '';
+    const notes = document.getElementById('f-notes').value.trim();
+
+    const unavails = [];
+    document.querySelectorAll('.unavail-entry').forEach(ue => {
+      const from = ue.querySelector('.date-from').value.trim();
+      const to = ue.querySelector('.date-to').value.trim();
+      const reason = ue.querySelector('.reason-sel').value;
+      if (from || to) unavails.push({ from, to, reason });
+    });
+
+    const entry = { name, email, role, days, time, notes, unavails, ts: Date.now() };
+
+    // Save to localStorage
+    let existing = [];
+    try { existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) {}
+    existing.push(entry);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
+
+    document.getElementById('progress').style.width = '100%';
+    document.getElementById('form-body').style.display = 'none';
+    document.getElementById('success-screen').style.display = 'block';
+  }
+
+  /* ── Load results ── */
+  function loadResults() {
+    let responses = [];
+    try { responses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) {}
+
+    const empty = document.getElementById('results-empty');
+    const content = document.getElementById('results-content');
+
+    if (responses.length === 0) {
+      content.style.display = 'none';
+      empty.style.display = 'block';
+      return;
+    }
+    content.style.display = 'block';
+    empty.style.display = 'none';
+
+    document.getElementById('r-total').textContent = responses.length;
+
+    const DAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+    const TIMES = ['Morning (9–12 PM)','Afternoon (12–4 PM)','Evening (5–8 PM)','Flexible'];
+    const dayCounts = {}, timeCounts = {};
+    responses.forEach(r => {
+      (r.days || []).forEach(d => { dayCounts[d] = (dayCounts[d] || 0) + 1; });
+      if (r.time) timeCounts[r.time] = (timeCounts[r.time] || 0) + 1;
+    });
+
+    const maxDay = Math.max(...Object.values(dayCounts), 1);
+    const maxTime = Math.max(...Object.values(timeCounts), 1);
+    const topDay = Object.entries(dayCounts).sort((a,b) => b[1]-a[1])[0];
+    const topTime = Object.entries(timeCounts).sort((a,b) => b[1]-a[1])[0];
+    document.getElementById('r-top-day').textContent = topDay ? topDay[0] : '—';
+    document.getElementById('r-top-time').textContent = topTime ? topTime[0].split(' ')[0] : '—';
+
+    const dayBars = document.getElementById('day-bars');
+    dayBars.innerHTML = '';
+    DAYS.forEach(d => {
+      const c = dayCounts[d] || 0;
+      const pct = Math.round(c / maxDay * 100);
+      dayBars.innerHTML += `<div class="bar-row"><span class="bar-key">${d}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-count">${c}</span></div>`;
+    });
+
+    const timeBars = document.getElementById('time-bars');
+    timeBars.innerHTML = '';
+    TIMES.forEach(t => {
+      const c = timeCounts[t] || 0;
+      const pct = Math.round(c / maxTime * 100);
+      timeBars.innerHTML += `<div class="bar-row"><span class="bar-key">${t.split(' ')[0]}</span><div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div><span class="bar-count">${c}</span></div>`;
+    });
+
+    const pList = document.getElementById('person-list');
+    pList.innerHTML = '';
+    responses.forEach(r => {
+      const initials = r.name.split(' ').map(x => x[0]).join('').toUpperCase().slice(0,2);
+      const dayTags = (r.days || []).map(d => `<span class="ptag">${d}</span>`).join('');
+      const timePill = r.time ? `<span class="ptag">${r.time}</span>` : '';
+      const unavailTags = (r.unavails || []).filter(u => u.from || u.to).map(u =>
+        `<span class="ptag unavail">⚠ ${u.from}${u.to ? ' – ' + u.to : ''}${u.reason ? ' (' + u.reason + ')' : ''}</span>`
+      ).join('');
+      const noteHtml = r.notes ? `<div class="person-note">"${r.notes}"</div>` : '';
+      pList.innerHTML += `<div class="person-card">
+        <div class="person-top">
+          <div class="avatar">${initials}</div>
+          <div><div class="person-name">${r.name}</div><div class="person-role">${r.role || 'No role selected'} · ${r.email}</div></div>
+        </div>
+        <div class="person-tags">${dayTags}${timePill}${unavailTags}</div>
+        ${noteHtml}
+      </div>`;
+    });
+  }
+
+  // Init results on load if tab is results
+  if (window.location.hash === '#results') switchTab('results');
+</script>
+</body>
+</html>
