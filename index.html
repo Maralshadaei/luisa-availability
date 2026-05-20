@@ -297,7 +297,7 @@
   <div class="results-view" id="results-view">
 
     <div class="storage-note">
-      ℹ️ <strong>Responses are stored in your browser's localStorage.</strong> For a real shared form, host this file on a server with a database backend, or use Google Forms. Each person's browser will only show responses submitted on that device unless you add a backend.
+      ✅ <strong>Responses are collected via Formspree.</strong> All submissions from all board members are visible in your <a href="https://formspree.io/forms/xojbelpk/submissions" target="_blank" style="color:#8a5a0a;font-weight:600;">Formspree dashboard →</a>
     </div>
 
     <div id="results-loading" style="text-align:center;padding:40px;color:var(--muted);display:none;">Loading...</div>
@@ -390,7 +390,7 @@
   }
 
   /* ── Submit ── */
-  function submitForm() {
+  async function submitForm() {
     const name = document.getElementById('f-name').value.trim();
     const email = document.getElementById('f-email').value.trim();
     if (!name || !email) { alert('Please fill in your name and email.'); return; }
@@ -408,23 +408,43 @@
       if (from || to) unavails.push({ from, to, reason });
     });
 
-    const entry = { name, email, role, days, time, notes, unavails, ts: Date.now() };
+    const btn = document.querySelector('.submit-btn');
+    btn.textContent = 'Submitting...';
+    btn.disabled = true;
 
-    // Save to localStorage
-    let existing = [];
-    try { existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) {}
-    existing.push(entry);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(existing));
-
-    document.getElementById('progress').style.width = '100%';
-    document.getElementById('form-body').style.display = 'none';
-    document.getElementById('success-screen').style.display = 'block';
+    try {
+      const res = await fetch('https://formspree.io/f/xojbelpk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({
+          name, email, role,
+          preferred_days: days.join(', '),
+          preferred_time: time,
+          unavailable_periods: unavails.map(u => u.from + (u.to?' – '+u.to:'') + (u.reason?' ('+u.reason+')':'')).join(' | ') || 'None',
+          notes: notes || 'None'
+        })
+      });
+      if (res.ok) {
+        document.getElementById('progress').style.width = '100%';
+        document.getElementById('form-body').style.display = 'none';
+        document.getElementById('success-screen').style.display = 'block';
+      } else {
+        alert('Something went wrong. Please try again.');
+        btn.textContent = 'Submit my availability →';
+        btn.disabled = false;
+      }
+    } catch(e) {
+      alert('Network error. Please check your connection and try again.');
+      btn.textContent = 'Submit my availability →';
+      btn.disabled = false;
+    }
   }
 
   /* ── Load results ── */
   function loadResults() {
     let responses = [];
     try { responses = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e) {}
+    // Note: responses from other devices are in your Formspree dashboard
 
     const empty = document.getElementById('results-empty');
     const content = document.getElementById('results-content');
